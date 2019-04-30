@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ankienen</string>
+    <string name="word">
+        the word
+    </string>
+    <string name="meaning">
+        the meaning
+    </string>
+    <string name="action_settings">Settings</string>
+</resources>
