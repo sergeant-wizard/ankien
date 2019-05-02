@@ -3,7 +3,7 @@ package com.example.ankienen
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 
-class MyAdapter(private val entries: Array<Entry>) :
+class MyAdapter(var entries: Array<Entry>) :
     RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
     class MyViewHolder(val buttonView: android.widget.Button) : RecyclerView.ViewHolder(buttonView)
     override fun onCreateViewHolder(parent: ViewGroup,
