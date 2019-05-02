@@ -25,9 +25,7 @@ class ScrollingActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
-
-        val entries = arrayOf(Entry("word", "meaning"))
-        inflateButtons(entries)
+        inflateButtons()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -47,8 +45,14 @@ class ScrollingActivity : AppCompatActivity() {
         }
     }
 
-    private fun inflateButtons(entries: Array<Entry>) {
-        button_list.adapter = MyAdapter(entries)
+    private fun inflateButtons() {
+        val adapter = MyAdapter(emptyArray())
+        button_list.adapter = adapter
         button_list.layoutManager = LinearLayoutManager(this)
+
+        requestMeaningAsync { meanings ->
+            adapter.entries = meanings
+            adapter.notifyDataSetChanged()
+        }
     }
 }
