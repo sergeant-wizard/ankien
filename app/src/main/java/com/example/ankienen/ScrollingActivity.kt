@@ -12,8 +12,13 @@ import kotlinx.android.synthetic.main.content_scrolling.*
 
 
 fun sendMeaning(view: android.view.View, entry: Entry) {
-    Snackbar.make(view, entry.meaning, Snackbar.LENGTH_LONG).setAction("Action", null).show()
-    // TODO: call addCard()
+    addCard(view.context, entry)
+    // TODO: Error handling
+    display(view, "Added")
+}
+
+fun display(view: android.view.View, msg: String) {
+    Snackbar.make(view, msg, Snackbar.LENGTH_LONG).setAction("Action", null).show()
 }
 
 class ScrollingActivity : AppCompatActivity() {
@@ -23,8 +28,7 @@ class ScrollingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_scrolling)
         setSupportActionBar(toolbar)
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            display(view, "Replace with your own action")
         }
         inflateButtons()
     }

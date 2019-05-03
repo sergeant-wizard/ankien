@@ -20,7 +20,7 @@ fun defaultModel(api: AddContentApi): Long? {
     return null
 }
 
-fun addCard(context: android.content.Context) {
+fun addCard(context: android.content.Context, entry: Entry) {
     val api = AddContentApi(context.applicationContext)
     val deckId = defaultDeckId(api)
     if (deckId == null) {
@@ -32,5 +32,5 @@ fun addCard(context: android.content.Context) {
         android.widget.Toast.makeText(context,"model deck not found", android.widget.Toast.LENGTH_SHORT).show()
         return
     }
-    api.addNote(modelId, deckId, arrayOf("word", "meaning"), setOf())
+    api.addNote(modelId, deckId, arrayOf(entry.word, entry.meaning), setOf())
 }
