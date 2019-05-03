@@ -52,6 +52,7 @@ class ScrollingActivity : AppCompatActivity() {
         button_list.layoutManager = LinearLayoutManager(this)
 
         requestMeaningAsync(
+            "voluminous",
             onSuccess = { meanings ->
                 adapter.entries = meanings
                 adapter.notifyDataSetChanged()

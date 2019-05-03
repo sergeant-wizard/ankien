@@ -15,8 +15,21 @@ fun requestMeaning(): Request {
     return url.httpGet(listOf(Pair("key", key)))
 }
 
-fun requestMeaningAsync(onSuccess: (Array<Entry>) -> Unit, onFailure: (String) -> Unit) {
-    requestMeaning().responseJson {
+fun validateWord(word: String): Boolean {
+    if (word.contains(" ")) {
+        android.util.Log.e("ankien", "idiom not supported")
+        return false
+    }
+    return true
+}
+
+fun requestMeaningAsync(word: String, onSuccess: (Array<Entry>) -> Unit, onFailure: (String) -> Unit) {
+    if (!validateWord((word))) {
+        // TODO: error handling
+        android.util.Log.e("ankien", "invalid word")
+        return
+    }
+    requestMeaning(word).responseJson {
             request, response, result ->
         if (!response.isSuccessful) {
             onFailure(response.responseMessage)
@@ -29,7 +42,7 @@ fun requestMeaningAsync(onSuccess: (Array<Entry>) -> Unit, onFailure: (String) -
         val defJson = result.get().array().getJSONObject(0).getJSONArray("shortdef")
         val numMeanings = defJson.length()
         val meanings = Array(numMeanings) {idx ->
-            Entry("word", defJson.getString(idx))
+            Entry(word, defJson.getString(idx))
         }
         onSuccess(meanings)
     }
