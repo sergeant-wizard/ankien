@@ -9,9 +9,9 @@ import org.json.JSONArray
 
 
 
-fun requestMeaning(): Request {
-    val key = null  // your key
-    val url = "https://www.dictionaryapi.com/api/v3/references/collegiate/json/voluminous"
+fun requestMeaning(word: String): Request {
+    val key = "your key"
+    val url = "https://www.dictionaryapi.com/api/v3/references/collegiate/json/$word"
     return url.httpGet(listOf(Pair("key", key)))
 }
 
