@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_scrolling.*
@@ -50,9 +51,15 @@ class ScrollingActivity : AppCompatActivity() {
         button_list.adapter = adapter
         button_list.layoutManager = LinearLayoutManager(this)
 
-        requestMeaningAsync { meanings ->
-            adapter.entries = meanings
-            adapter.notifyDataSetChanged()
-        }
+        requestMeaningAsync(
+            onSuccess = { meanings ->
+                adapter.entries = meanings
+                adapter.notifyDataSetChanged()
+            },
+            onFailure = { msg ->
+                // TODO: exception handling
+                Log.e("ankien", msg)
+            }
+        )
     }
 }

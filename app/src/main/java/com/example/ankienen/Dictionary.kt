@@ -2,7 +2,11 @@ package com.example.ankienen
 
 import com.github.kittinunf.fuel.*
 import com.github.kittinunf.fuel.core.Request
+import com.github.kittinunf.fuel.core.isSuccessful
 import com.github.kittinunf.fuel.json.responseJson
+import org.json.JSONArray
+
+
 
 
 fun requestMeaning(): Request {
@@ -11,15 +15,22 @@ fun requestMeaning(): Request {
     return url.httpGet(listOf(Pair("key", key)))
 }
 
-fun requestMeaningAsync(callback: (Array<Entry>) -> Unit) {
+fun requestMeaningAsync(onSuccess: (Array<Entry>) -> Unit, onFailure: (String) -> Unit) {
     requestMeaning().responseJson {
             request, response, result ->
-        // TODO: error handling
+        if (!response.isSuccessful) {
+            onFailure(response.responseMessage)
+            return@responseJson
+        }
+        if (result.get().content == "Key is required.") {
+            onFailure("Invalid Key")
+            return@responseJson
+        }
         val defJson = result.get().array().getJSONObject(0).getJSONArray("shortdef")
         val numMeanings = defJson.length()
         val meanings = Array(numMeanings) {idx ->
             Entry("word", defJson.getString(idx))
         }
-        callback(meanings)
+        onSuccess(meanings)
     }
 }
