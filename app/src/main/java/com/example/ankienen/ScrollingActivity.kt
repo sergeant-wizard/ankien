@@ -1,5 +1,6 @@
 package com.example.ankienen
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
@@ -50,13 +51,24 @@ class ScrollingActivity : AppCompatActivity() {
         }
     }
 
+    private fun getIntentText(): String {
+        return if (intent.type == "text/plain") {
+            intent.getStringExtra(Intent.EXTRA_TEXT)
+        } else {
+            // TODO: add a text box to input words directly
+            "voluminous"
+        }
+    }
+
     private fun inflateButtons() {
         val adapter = MyAdapter(emptyArray())
+        val word = getIntentText()
+
         button_list.adapter = adapter
         button_list.layoutManager = LinearLayoutManager(this)
 
         requestMeaningAsync(
-            "voluminous",
+            word,
             onSuccess = { meanings ->
                 adapter.entries = meanings
                 adapter.notifyDataSetChanged()
