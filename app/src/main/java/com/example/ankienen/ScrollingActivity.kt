@@ -31,7 +31,14 @@ class ScrollingActivity : AppCompatActivity() {
         fab.setOnClickListener { view ->
             display(view, "Replace with your own action")
         }
-        inflateButtons()
+        inflateButtons(intent)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if (intent != null) {
+            inflateButtons(intent)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -51,7 +58,7 @@ class ScrollingActivity : AppCompatActivity() {
         }
     }
 
-    private fun getIntentText(): String {
+    private fun getIntentText(intent: Intent): String {
         return if (intent.type == "text/plain") {
             intent.getStringExtra(Intent.EXTRA_TEXT)
         } else {
@@ -60,9 +67,9 @@ class ScrollingActivity : AppCompatActivity() {
         }
     }
 
-    private fun inflateButtons() {
+    private fun inflateButtons(intent: Intent) {
         val adapter = MyAdapter(emptyArray())
-        val word = getIntentText()
+        val word = getIntentText(intent)
 
         button_list.adapter = adapter
         button_list.layoutManager = LinearLayoutManager(this)
