@@ -71,6 +71,7 @@ class ScrollingActivity : AppCompatActivity() {
         val adapter = MyAdapter(emptyArray())
         val word = getIntentText(intent)
 
+        toolbar_layout.title = word
         button_list.adapter = adapter
         button_list.layoutManager = LinearLayoutManager(this)
 
