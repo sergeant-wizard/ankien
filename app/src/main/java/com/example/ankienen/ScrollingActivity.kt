@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.SearchView
 import kotlinx.android.synthetic.main.activity_scrolling.*
 import kotlinx.android.synthetic.main.content_scrolling.*
 
@@ -28,16 +29,25 @@ class ScrollingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scrolling)
         setSupportActionBar(toolbar)
-        fab.setOnClickListener { view ->
-            display(view, "Replace with your own action")
-        }
-        inflateButtons(intent)
+        // FIXME: there should be a better layout
+        toolbar_layout.isTitleEnabled = false
+        inflateButtons(getIntentText(intent))
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                inflateButtons(query)
+                return true
+            }
+            override fun onQueryTextChange(query: String): Boolean {
+                return false
+            }
+
+        })
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         if (intent != null) {
-            inflateButtons(intent)
+            inflateButtons(getIntentText(intent))
         }
     }
 
@@ -67,13 +77,12 @@ class ScrollingActivity : AppCompatActivity() {
         }
     }
 
-    private fun inflateButtons(intent: Intent) {
+    private fun inflateButtons(word: String) {
         val adapter = MyAdapter(emptyArray())
-        val word = getIntentText(intent)
 
-        toolbar_layout.title = word
         button_list.adapter = adapter
         button_list.layoutManager = LinearLayoutManager(this)
+        searchView.setQuery(word, false)
 
         requestMeaningAsync(
             word,
