@@ -63,7 +63,7 @@ class ScrollingActivity : AppCompatActivity() {
             intent.getStringExtra(Intent.EXTRA_TEXT)
         } else {
             // TODO: add a text box to input words directly
-            "voluminous"
+            "pith"
         }
     }
 

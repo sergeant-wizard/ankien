@@ -7,8 +7,6 @@ import com.github.kittinunf.fuel.json.responseJson
 import org.json.JSONArray
 
 
-
-
 fun requestMeaning(word: String): Request {
     val key = "your key"
     val url = "https://www.dictionaryapi.com/api/v3/references/collegiate/json/$word"
@@ -21,6 +19,17 @@ fun validateWord(word: String): Boolean {
         return false
     }
     return true
+}
+
+fun parseJson(json: JSONArray): Array<String> {
+    var ret = emptyArray<String>()
+    for (i in 0 until json.length()) {
+        val definitions = json.getJSONObject(i).getJSONArray(("shortdef"))
+        for (j in 0 until definitions.length()) {
+            ret += definitions.getString(j)
+        }
+    }
+    return ret
 }
 
 fun requestMeaningAsync(word: String, onSuccess: (Array<Entry>) -> Unit, onFailure: (String) -> Unit) {
@@ -39,11 +48,9 @@ fun requestMeaningAsync(word: String, onSuccess: (Array<Entry>) -> Unit, onFailu
             onFailure("Invalid Key")
             return@responseJson
         }
-        val defJson = result.get().array().getJSONObject(0).getJSONArray("shortdef")
-        val numMeanings = defJson.length()
-        val meanings = Array(numMeanings) {idx ->
-            Entry(word, defJson.getString(idx))
-        }
-        onSuccess(meanings)
+        val stringMeanings = parseJson(result.get().array())
+        onSuccess(stringMeanings.map {
+            Entry(word, it)
+        }.toTypedArray())
     }
 }
