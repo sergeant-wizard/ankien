@@ -35,6 +35,7 @@ class ScrollingActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 inflateButtons(query)
+                searchView.clearFocus()
                 return true
             }
             override fun onQueryTextChange(query: String): Boolean {
