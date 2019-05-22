@@ -5,6 +5,7 @@ import com.github.kittinunf.fuel.core.Request
 import com.github.kittinunf.fuel.core.isSuccessful
 import com.github.kittinunf.fuel.json.responseJson
 import org.json.JSONArray
+import org.json.JSONObject
 
 
 fun requestMeaning(word: String): Request {
@@ -24,7 +25,12 @@ fun validateWord(word: String): Boolean {
 fun parseJson(json: JSONArray): Array<String> {
     var ret = emptyArray<String>()
     for (i in 0 until json.length()) {
-        val definitions = json.getJSONObject(i).getJSONArray(("shortdef"))
+        var definitions: JSONArray
+        try {
+            definitions = json.getJSONObject(i).getJSONArray(("shortdef"))
+        } catch (e: org.json.JSONException) {
+            return ret
+        }
         for (j in 0 until definitions.length()) {
             ret += definitions.getString(j)
         }

@@ -24,11 +24,22 @@ val exampleJson = """[
     ]
 }]""".trimIndent()
 
+// when the requested word does not exist
+val invalidJson = """[
+    "a", "b", "c"
+]""".trimMargin()
+
 class ExampleUnitTest {
     @Test
     fun jsonParse() {
         val words = parseJson(org.json.JSONArray(exampleJson))
         val expected = arrayOf("meaning1", "meaning2", "meaning3", "meaning4")
+        assertArrayEquals(expected, words)
+    }
+    @Test
+    fun invalidJsonParse() {
+        val expected = emptyArray<String>()
+        val words = parseJson(org.json.JSONArray(invalidJson))
         assertArrayEquals(expected, words)
     }
 }
